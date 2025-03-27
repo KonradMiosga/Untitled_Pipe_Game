@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b16f011fa886f4141bfbff6f3c98a70e, type: 3}
+  m_Name: Database
+  m_EditorClassIdentifier: 
+  objectsData:
+  - <Name>k__BackingField: Pipe_Straight
+    <ID>k__BackingField: 0
+    <Prefab>k__BackingField: {fileID: 919132149155446097, guid: 3a0ebe8369120ff479f604385a1b7fc9, type: 3}
+  - <Name>k__BackingField: Pipe_Bend
+    <ID>k__BackingField: 1
+    <Prefab>k__BackingField: {fileID: 919132149155446097, guid: 3ea2c0330b573614fbc9ae6b8cab5c71, type: 3}

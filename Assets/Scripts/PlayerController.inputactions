@@ -1,0 +1,95 @@
+{
+  "name": "PlayerController",
+  "maps": [
+    {
+      "name": "Gameplay",
+      "id": "3a8099ce-5c2d-4fee-878e-e75f2b331d3f",
+      "actions": [
+        {
+          "name": "Move",
+          "type": "PassThrough",
+          "id": "f5a86a7a-ea0e-4a11-901f-889643fccac3",
+          "expectedControlType": "Vector3"
+        },
+        {
+          "name": "Zoom",
+          "type": "PassThrough",
+          "id": "7d0ac38c-f3a0-4dd6-93b8-e5bf38b8acc8",
+          "expectedControlType": "Axis"
+        }
+      ],
+      "bindings": [
+        {
+          "name": "3D Vector",
+          "id": "bc7303ca-f05a-4795-a8f7-935ac6fc3c73",
+          "path": "3DVector",
+          "action": "Move",
+          "isComposite": true
+        },
+        {
+          "name": "Up",
+          "id": "9d021729-1605-4210-937b-14afa1c8e6fc",
+          "path": "<Keyboard>/e",
+          "action": "Move",
+          "isPartOfComposite": true
+        },
+        {
+          "name": "Down",
+          "id": "6cea5ad5-f0ec-4607-9577-c0de5241eb6e",
+          "path": "<Keyboard>/q",
+          "action": "Move",
+          "isPartOfComposite": true
+        },
+        {
+          "name": "Left",
+          "id": "25e62ced-ef6b-43cd-b066-d1ff913479ff",
+          "path": "<Keyboard>/a",
+          "action": "Move",
+          "isPartOfComposite": true
+        },
+        {
+          "name": "Right",
+          "id": "0e7261d0-fe25-4e8e-a39a-e4c8f2b1f86b",
+          "path": "<Keyboard>/d",
+          "action": "Move",
+          "isPartOfComposite": true
+        },
+        {
+          "name": "Forward",
+          "id": "5f9faabe-45a1-4a34-9819-8bc291a7610c",
+          "path": "<Keyboard>/w",
+          "action": "Move",
+          "isPartOfComposite": true
+        },
+        {
+          "name": "Backward",
+          "id": "59e1c30e-30c5-4cff-b44c-f5b07585e44b",
+          "path": "<Keyboard>/s",
+          "action": "Move",
+          "isPartOfComposite": true
+        },
+        {
+          "name": "",
+          "id": "e364a746-fd32-4d20-a88e-13a8d361942c",
+          "path": "<Mouse>/scroll/y",
+          "action": "Zoom",
+          "isComposite": false,
+          "isPartOfComposite": false
+        }
+      ]
+    }
+  ],
+  "controlSchemes": [
+    {
+      "name": "Keyboard",
+      "bindingGroup": "Keyboard",
+      "devices": [
+        {
+          "devicePath": "<Keyboard>",
+          "isOptional": false,
+          "isOR": false
+        }
+      ]
+    }
+  ]
+}

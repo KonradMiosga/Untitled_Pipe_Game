@@ -8,4 +8,6 @@ public class FollowPlayer : MonoBehaviour
     {
         transform.position = following.transform.position;
     }
+
+    
 }

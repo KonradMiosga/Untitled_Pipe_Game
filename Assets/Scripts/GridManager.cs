@@ -10,7 +10,7 @@ public class GridManager : MonoBehaviour
     Dictionary<Vector3Int, Node> grid = new Dictionary<Vector3Int, Node>();
     Dictionary<Vector3Int, Node> Grid { get { return grid; } }
 
-    private void Awake()
+    public void InitializeGrid()
     {
         for (int x = 0; x < gridSize.x; x++)
         {
@@ -19,16 +19,15 @@ public class GridManager : MonoBehaviour
                 for (int z = 0; z < gridSize.z; z++)
                 {
                     Vector3Int cords = new Vector3Int(x, y, z);
-                    Connections connections = new Connections(0,0,0,0,0,0);
+                    Connections connections = new Connections(0, 0, 0, 0, 0, 0);
                     grid.Add(cords, new Node(cords, false, connections));
                     Node thisNode = grid[cords];
-                    Debug.Log(thisNode.connections.posX);
                 }
             }
         }
     }
 
-    void Start()
+    public void DrawGridBounds()
     {
         GameObject boundsCube = GameObject.CreatePrimitive(PrimitiveType.Cube);
         Vector3 size = new Vector3(gridSize.x, gridSize.y, gridSize.z) * unityGridSize;

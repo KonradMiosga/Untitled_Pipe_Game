@@ -12,7 +12,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] float moveTime = 0.1f;
     [SerializeField] float holdDelay = 0.3f;
 
-    private bool isHoldingKey;
+    private bool isHoldingKey = false;
     private Coroutine moveLoopCoroutine;
 
     void Awake()
@@ -110,7 +110,7 @@ public class PlayerMovement : MonoBehaviour
         while (elapsed < moveTime)
         {
             float t = elapsed / moveTime;
-            t = Mathf.SmoothStep(0f, 1f, t); // 👈 Add ease-in-out
+            t = Mathf.SmoothStep(0f, 1f, t);
             transform.position = Vector3.Lerp(start, target, t);
             elapsed += Time.deltaTime;
             yield return null;

@@ -6,7 +6,7 @@ public class ZoomController : MonoBehaviour
     private PlayerController playerController;
     [SerializeField] private Camera cam;
 
-    [SerializeField] private float zoomSpeed = 1000f;
+    //[SerializeField] private float zoomSpeed = 1000f;
     [SerializeField] private float minDistance = 3f;
     [SerializeField] private float maxDistance = 20f;
 

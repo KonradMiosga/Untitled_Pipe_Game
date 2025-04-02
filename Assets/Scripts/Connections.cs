@@ -2,20 +2,20 @@ using UnityEngine;
 
 public class Connections
 {
-    public int posX;
-    public int negX;
-    public int posY;
-    public int negY;
-    public int posZ;
-    public int negZ;
+    public int Xpos;
+    public int Xneg;
+    public int Ypos;
+    public int Yneg;
+    public int Zpos;
+    public int Zneg;
 
-    public Connections(int posX, int negX, int posY, int negY, int posZ, int negZ)
+    public Connections(int Xpos, int Xneg, int Ypos, int Yneg, int Zpos, int Zneg)
     {
-        this.posX = posX;
-        this.negX = negX;
-        this.posY = posY;
-        this.negY = negY;
-        this.posZ = posZ;
-        this.negZ = negZ;
+        this.Xpos = Xpos;
+        this.Xneg = Xneg;
+        this.Ypos = Ypos;
+        this.Yneg = Yneg;
+        this.Zpos = Zpos;
+        this.Zneg = Zneg;
     }
 }

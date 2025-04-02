@@ -1,15 +1,19 @@
+using UnityEditor.Build.Content;
 using UnityEngine;
 using UnityEngine.Rendering;
 
-public class GameInitiator : MonoBehaviour
+public class GameManager : MonoBehaviour
 {
 
     [SerializeField] private GameObject _player;
     [SerializeField] private GridManager _gridManager;
     [SerializeField] private Light _mainDirectionalLight;
     [SerializeField] private Volume _globalVolume;
-    //[SerializeField] private Camera _mainCamera;
     [SerializeField] private GameObject _manipulator;
+    [SerializeField] private InOutPlacement _inOutPlacement;
+
+    private PlayerMovement _playerMovement;
+    private PipePlacement _pipePlacement;
     private void Start()
     {
 
@@ -17,6 +21,14 @@ public class GameInitiator : MonoBehaviour
 
         _gridManager.InitializeGrid();
         _gridManager.DrawGridBounds();
+        _gridManager.PlaceInCenter(_player);
+
+        _playerMovement = _player.GetComponent<PlayerMovement>();
+
+        _pipePlacement = _player.GetComponent<PipePlacement>();
+
+        _inOutPlacement.PickRandomSide();
+
 
     }
 
@@ -31,9 +43,8 @@ public class GameInitiator : MonoBehaviour
         _globalVolume = Instantiate(_globalVolume);
         _gridManager = Instantiate(_gridManager);
         _player = Instantiate(_player);
-        //_mainCamera = Instantiate(_mainCamera);
-        //_mainCamera.transform.SetParent(_player.transform, true);
         _manipulator = Instantiate(_manipulator);
+        _inOutPlacement = Instantiate(_inOutPlacement);
     }
 
 }

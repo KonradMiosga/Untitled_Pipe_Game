@@ -125,7 +125,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerMovement: {fileID: 2384679238990728549}
-  database: {fileID: 11400000, guid: 11415d5442a71534c8dde9e582d1f14a, type: 2}
+  databasePipes: {fileID: 11400000, guid: 11415d5442a71534c8dde9e582d1f14a, type: 2}
+  material: {fileID: 2100000, guid: 581e12615efa7db41ac981a3d900eb98, type: 2}
+  ghostMat_green: {fileID: 2100000, guid: 1cd665cb623d01844ad3c739ce913df5, type: 2}
+  ghostMat_red: {fileID: 2100000, guid: 37f7581348a4b4642b55a8bf0c55696a, type: 2}
 --- !u!1 &8793291192490850207
 GameObject:
   m_ObjectHideFlags: 0

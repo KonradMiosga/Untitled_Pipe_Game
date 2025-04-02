@@ -3,50 +3,83 @@ using UnityEngine;
 
 public class PipePlacement : MonoBehaviour
 {
-
     [SerializeField] PlayerMovement playerMovement;
     public event Action OnClicked;
-    [SerializeField]
-    private ObjectsDatabaseSO database;
+
+    [SerializeField] private ObjectsDatabasePipes databasePipes;
+
     private int selectedObjectIndex = -1;
-    int rotX;
-    int rotY;
-    int rotZ;
+    private int rotX, rotY, rotZ;
+
+    private GameObject _ghostObject;
+
+    [SerializeField] private Material material;
+    [SerializeField] private Material ghostMat_green;
+    [SerializeField] private Material ghostMat_red;
+    private GridManager _gridManager;
+
+    void Awake()
+    {
+        if (_gridManager == null)
+            _gridManager = FindFirstObjectByType<GridManager>();
+    }
+
     void Start()
     {
-        //int rand = UnityEngine.Random.Range(0, database.objectsData.Count);
         StartPlacement();
     }
 
     void Update()
     {
+        if (_ghostObject != null)
+        {
+            _ghostObject.transform.position = transform.position;
+
+            if (_gridManager.IsValidPlace(transform.position))
+            {
+                _ghostObject.GetComponent<Renderer>().material = ghostMat_green;
+            }
+            else
+            {
+                _ghostObject.GetComponent<Renderer>().material = ghostMat_red;
+            }
+        }
+
+        if (playerMovement.isMoving) return;
+
         if (Input.GetMouseButtonDown(0))
         {
             OnClicked?.Invoke();
         }
-        if (playerMovement.isMoving) return;
     }
 
     public void StartPlacement()
     {
-        //int ID = UnityEngine.Random.Range(0, database.objectsData.Count);
-        //selectedObjectIndex = database.objectsData.FindIndex(data => data.ID == ID);
         OnClicked += PlaceStructure;
+        PrepareNextGhost();
     }
 
     private void PlaceStructure()
     {
-        if (!playerMovement.isMoving)
-        {
-            selectedObjectIndex = UnityEngine.Random.Range(0, database.objectsData.Count);
-            GameObject gameObject = Instantiate(database.objectsData[selectedObjectIndex].Prefab);
-            gameObject.transform.position = transform.position;
-            rotX = UnityEngine.Random.Range(0, 4) * 90;
-            rotY = UnityEngine.Random.Range(0, 4) * 90;
-            rotZ = UnityEngine.Random.Range(0, 4) * 90;
+        if (playerMovement.isMoving || !_gridManager.IsValidPlace(transform.position)) return;
 
-            gameObject.transform.rotation = Quaternion.Euler(rotX, rotY, rotZ);
+        GameObject placed = Instantiate(databasePipes.objectsData[selectedObjectIndex].Prefab);
+        placed.GetComponent<Renderer>().material = material;
+        placed.transform.position = transform.position;
 
-        }
+        _gridManager.AddtoGrid(placed);
+        Debug.Log(UnityEngine.Random.Range(-4,0));
+
+        Destroy(_ghostObject);
+        PrepareNextGhost();
     }
+
+    private void PrepareNextGhost()
+    {
+        selectedObjectIndex = UnityEngine.Random.Range(0, databasePipes.objectsData.Count);
+
+        _ghostObject = Instantiate(databasePipes.objectsData[selectedObjectIndex].Prefab);
+        _ghostObject.GetComponent<Renderer>().material = ghostMat_green;
+    }
+
 }

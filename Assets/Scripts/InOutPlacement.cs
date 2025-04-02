@@ -5,6 +5,8 @@ public class InOutPlacement : MonoBehaviour
     [SerializeField] private ObjectsDatabaseInOut databaseInOut;
     private int _side;
     private GridManager _gridManager;
+    private ObjectsDataInOut _input;
+    private ObjectsDataInOut _output;
     private int _xOut = 0;
     private int _yOut = 0;
     private int _zOut = 0;
@@ -17,10 +19,9 @@ public class InOutPlacement : MonoBehaviour
         if (_gridManager == null)
             _gridManager = FindFirstObjectByType<GridManager>();
     }
-    public void PickRandomSide()
+    public void PlaceInOutInWorld()
     {
         _side = UnityEngine.Random.Range(0, 6);
-        Debug.Log(_side);
 
         switch (_side)
         {
@@ -77,13 +78,22 @@ public class InOutPlacement : MonoBehaviour
                 break;
         }
 
+        _input = databaseInOut.objectsData[_side];
         Vector3Int posIn = new Vector3Int(_xIn, _yIn, _zIn);
-        GameObject placedIn = Instantiate(databaseInOut.objectsData[_side].Prefab);
+        _gridManager.inputPos = posIn;
+        GameObject placedIn = Instantiate(_input.Prefab);
         placedIn.transform.position = posIn;
-        
+        _gridManager.AddInOuttoGrid(_input,posIn, placedIn);
+        Debug.Log($"Input placed at {posIn} with connections {_gridManager.grid[posIn]}");
+
+        _output = databaseInOut.objectsData[_side + 6];
         Vector3Int posOut = new Vector3Int(_xOut, _yOut, _zOut);
-        GameObject placedOut = Instantiate(databaseInOut.objectsData[_side + 6].Prefab);
+        _gridManager.outputPos = posOut;
+        GameObject placedOut = Instantiate(_output.Prefab);
         placedOut.transform.position = posOut;
+        _gridManager.AddInOuttoGrid(_output, posOut, placedOut);
+        Debug.Log($"Output placed at {posOut} with connections {_gridManager.grid[posOut]}");
 
     }
+
 }

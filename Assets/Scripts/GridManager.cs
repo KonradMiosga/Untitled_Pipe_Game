@@ -7,8 +7,10 @@ public class GridManager : MonoBehaviour
     [SerializeField] public Vector3Int gridSize;
     [SerializeField] int unityGridSize;
     [SerializeField] Material material;
+    public Vector3Int inputPos;
+    public Vector3Int outputPos;
     public int UnityGridSize { get { return unityGridSize; } }
-    Dictionary<Vector3Int, Node> grid = new Dictionary<Vector3Int, Node>();
+    public Dictionary<Vector3Int, Node> grid = new Dictionary<Vector3Int, Node>();
 
     public void InitializeGrid()
     {
@@ -24,7 +26,7 @@ public class GridManager : MonoBehaviour
                 }
             }
         }
-        PrintGrid();
+        //PrintGrid();
     }
 
     public void DrawGridBounds()
@@ -47,12 +49,9 @@ public class GridManager : MonoBehaviour
         obj.transform.position = center;
     }
 
-    public void AddtoGrid(GameObject obj)
+    public void AddPipetoGrid(ObjectsDataPipes pipe, Vector3 pos, GameObject pipeGameObject)
     {
-        Vector3Int cords = WorldToGridCoords(obj.transform.position);
-        Debug.Log($"Current value of key{grid[cords]}");
-
-        Debug.Log($"Trying to place at grid coord: {cords}");
+        Vector3Int cords = WorldToGridCoords(pos);
         if (!grid.ContainsKey(cords))
         {
             Debug.LogError($"Grid does NOT contain key: {cords}");
@@ -60,9 +59,35 @@ public class GridManager : MonoBehaviour
         else
         {
             grid[cords].isFree = false;
+            grid[cords].gameObject = pipeGameObject;
+            grid[cords].connections.Xpos = pipe.Xpos;
+            grid[cords].connections.Xneg = pipe.Xneg;
+            grid[cords].connections.Ypos = pipe.Ypos;
+            grid[cords].connections.Yneg = pipe.Yneg;
+            grid[cords].connections.Zpos = pipe.Zpos;
+            grid[cords].connections.Zneg = pipe.Zneg;
         }
+    }
 
-        PrintGrid();
+    public void AddInOuttoGrid(ObjectsDataInOut inOut, Vector3 pos, GameObject inOutGameObject)
+    {
+        Vector3Int cords = WorldToGridCoords(pos);
+        if (!grid.ContainsKey(cords))
+        {
+            Debug.LogError($"Grid does NOT contain key: {cords}");
+        }
+        else
+        {
+            grid[cords].isFree = false;
+            grid[cords].gameObject = inOutGameObject;
+            grid[cords].connections.Xpos = inOut.Xpos;
+            grid[cords].connections.Xneg = inOut.Xneg;
+            grid[cords].connections.Ypos = inOut.Ypos;
+            grid[cords].connections.Yneg = inOut.Yneg;
+            grid[cords].connections.Zpos = inOut.Zpos;
+            grid[cords].connections.Zneg = inOut.Zneg;
+            //Debug.Log(grid[cords].ToString());
+        }
     }
 
     public Vector3Int WorldToGridCoords(Vector3 worldPos)
@@ -78,7 +103,7 @@ public class GridManager : MonoBehaviour
     {
         foreach (KeyValuePair<Vector3Int, Node> entry in grid)
         {
-            Debug.Log($"Coord: {entry.Key} | Empty?: {entry.Value.isFree}");
+            Debug.Log($"Coord: {entry.Key} | Empty?: {entry.Value.connections}");
         }
     }
 

@@ -5,14 +5,9 @@ public class PipePlacement : MonoBehaviour
 {
     [SerializeField] PlayerMovement playerMovement;
     public event Action OnClicked;
-
     [SerializeField] private ObjectsDatabasePipes databasePipes;
-
     private int selectedObjectIndex = -1;
-    private int rotX, rotY, rotZ;
-
     private GameObject _ghostObject;
-
     [SerializeField] private Material material;
     [SerializeField] private Material ghostMat_green;
     [SerializeField] private Material ghostMat_red;
@@ -63,12 +58,13 @@ public class PipePlacement : MonoBehaviour
     {
         if (playerMovement.isMoving || !_gridManager.IsValidPlace(transform.position)) return;
 
-        GameObject placed = Instantiate(databasePipes.objectsData[selectedObjectIndex].Prefab);
+        ObjectsDataPipes pipe = databasePipes.objectsData[selectedObjectIndex];
+        GameObject placed = Instantiate(pipe.Prefab);
         placed.GetComponent<Renderer>().material = material;
         placed.transform.position = transform.position;
 
-        _gridManager.AddtoGrid(placed);
-        Debug.Log(UnityEngine.Random.Range(-4,0));
+        _gridManager.AddPipetoGrid(pipe, placed.transform.position, placed);
+        Debug.Log($"Pipe placed at {_gridManager.WorldToGridCoords(placed.transform.position)} with connections {_gridManager.grid[_gridManager.WorldToGridCoords(placed.transform.position)].ToString()}");
 
         Destroy(_ghostObject);
         PrepareNextGhost();

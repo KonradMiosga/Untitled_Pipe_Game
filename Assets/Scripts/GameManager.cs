@@ -27,7 +27,7 @@ public class GameManager : MonoBehaviour
 
         _pipePlacement = _player.GetComponent<PipePlacement>();
 
-        _inOutPlacement.PickRandomSide();
+        _inOutPlacement.PlaceInOutInWorld();
 
 
     }
@@ -43,7 +43,7 @@ public class GameManager : MonoBehaviour
         _globalVolume = Instantiate(_globalVolume);
         _gridManager = Instantiate(_gridManager);
         _player = Instantiate(_player);
-        _manipulator = Instantiate(_manipulator);
+        //_manipulator = Instantiate(_manipulator);
         _inOutPlacement = Instantiate(_inOutPlacement);
     }
 

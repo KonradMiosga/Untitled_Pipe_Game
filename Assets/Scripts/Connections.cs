@@ -17,5 +17,6 @@ public class Connections
         this.Yneg = Yneg;
         this.Zpos = Zpos;
         this.Zneg = Zneg;
+        ;
     }
 }

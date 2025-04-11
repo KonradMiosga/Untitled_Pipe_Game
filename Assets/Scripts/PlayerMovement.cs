@@ -12,7 +12,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] float moveTime = 0.1f;
     [SerializeField] float holdDelay = 0.3f;
 
-    private bool isHoldingKey = false;
+    //private bool isHoldingKey = false;
     private Coroutine moveLoopCoroutine;
 
     void Awake()
@@ -22,7 +22,7 @@ public class PlayerMovement : MonoBehaviour
         controls.Gameplay.Move.performed += ctx =>
         {
             moveInput = ctx.ReadValue<Vector3>();
-            isHoldingKey = true;
+            //isHoldingKey = true;
 
             if (moveLoopCoroutine == null)
                 moveLoopCoroutine = StartCoroutine(HandleHoldMovement());
@@ -30,7 +30,7 @@ public class PlayerMovement : MonoBehaviour
 
         controls.Gameplay.Move.canceled += ctx =>
         {
-            isHoldingKey = false;
+            //isHoldingKey = false;
         };
     }
 

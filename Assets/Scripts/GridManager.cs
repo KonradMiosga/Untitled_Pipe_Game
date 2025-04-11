@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SocialPlatforms.GameCenter;
 
 public class GridManager : MonoBehaviour
 {
@@ -11,6 +10,7 @@ public class GridManager : MonoBehaviour
     public Vector3Int outputPos;
     public int UnityGridSize { get { return unityGridSize; } }
     public Dictionary<Vector3Int, Node> grid = new Dictionary<Vector3Int, Node>();
+    public List<Node> path = new List<Node>();
 
     public void InitializeGrid()
     {
@@ -58,6 +58,7 @@ public class GridManager : MonoBehaviour
         }
         else
         {
+            grid[cords].cords = cords;
             grid[cords].isFree = false;
             grid[cords].gameObject = pipeGameObject;
             grid[cords].connections.Xpos = pipe.Xpos;
@@ -78,6 +79,7 @@ public class GridManager : MonoBehaviour
         }
         else
         {
+            grid[cords].cords = cords;
             grid[cords].isFree = false;
             grid[cords].gameObject = inOutGameObject;
             grid[cords].connections.Xpos = inOut.Xpos;
@@ -86,7 +88,6 @@ public class GridManager : MonoBehaviour
             grid[cords].connections.Yneg = inOut.Yneg;
             grid[cords].connections.Zpos = inOut.Zpos;
             grid[cords].connections.Zneg = inOut.Zneg;
-            //Debug.Log(grid[cords].ToString());
         }
     }
 

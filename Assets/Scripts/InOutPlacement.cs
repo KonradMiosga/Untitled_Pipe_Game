@@ -84,6 +84,7 @@ public class InOutPlacement : MonoBehaviour
         GameObject placedIn = Instantiate(_input.Prefab);
         placedIn.transform.position = posIn;
         _gridManager.AddInOuttoGrid(_input,posIn, placedIn);
+        _gridManager.path.Add(_gridManager.grid[posIn]);
         Debug.Log($"Input placed at {posIn} with connections {_gridManager.grid[posIn]}");
 
         _output = databaseInOut.objectsData[_side + 6];

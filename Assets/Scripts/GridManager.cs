@@ -8,12 +8,22 @@ public class GridManager : MonoBehaviour
     [SerializeField] Material material;
     public Vector3Int inputPos;
     public Vector3Int outputPos;
+    public GameSettings _gameSettings;
     public int UnityGridSize { get { return unityGridSize; } }
     public Dictionary<Vector3Int, Node> grid = new Dictionary<Vector3Int, Node>();
     public List<Node> path = new List<Node>();
 
     public void InitializeGrid()
     {
+        if (_gameSettings == null)
+        {
+            _gameSettings = FindFirstObjectByType<GameSettings>();
+        }
+
+        gridSize.x = _gameSettings.getX();
+        gridSize.y = _gameSettings.getY();
+        gridSize.z = _gameSettings.getZ();
+
         for (int x = 0; x < gridSize.x; x++)
         {
             for (int y = 0; y < gridSize.y; y++)

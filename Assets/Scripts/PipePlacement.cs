@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -14,6 +16,7 @@ public class PipePlacement : MonoBehaviour
     [SerializeField] private Material ghostMat_green;
     [SerializeField] private Material ghostMat_red;
     private GridManager _gridManager;
+
 
     void Awake()
     {
@@ -70,7 +73,8 @@ public class PipePlacement : MonoBehaviour
         _gridManager.AddPipetoGrid(pipe, placed.transform.position, placed);
         Debug.Log($"Pipe placed at {_gridManager.WorldToGridCoords(placed.transform.position)} with connections {_gridManager.grid[_gridManager.WorldToGridCoords(placed.transform.position)].ToString()}");
 
-        CheckIfConnected(_gridManager.grid[pos]);
+        CheckPathFromInput();
+
 
         Destroy(_ghostObject);
         PrepareNextGhost();
@@ -82,6 +86,48 @@ public class PipePlacement : MonoBehaviour
 
         _ghostObject = Instantiate(databasePipes.objectsData[selectedObjectIndex].Prefab);
         _ghostObject.GetComponent<Renderer>().material = ghostMat_green;
+    }
+
+    private void CheckPathFromInput()
+    {
+        Vector3Int start = _gridManager.inputPos;
+
+        if (!_gridManager.grid.ContainsKey(start)) return;
+
+        HashSet<Vector3Int> visited = new HashSet<Vector3Int>();
+        Queue<Node> queue = new Queue<Node>();
+
+        queue.Enqueue(_gridManager.grid[start]);
+        visited.Add(start);
+
+        while (queue.Count > 0)
+        {
+            Node current = queue.Dequeue();
+            current.gameObject.GetComponent<Renderer>().material.color = Color.blue;
+
+            foreach (Vector3Int dir in new Vector3Int[] {
+            Vector3Int.right, Vector3Int.left,
+            Vector3Int.up, Vector3Int.down,
+            Vector3Int.forward, Vector3Int.back })
+            {
+                Vector3Int neighborCoords = current.cords + dir;
+
+                if (_gridManager.grid.ContainsKey(neighborCoords) &&
+                    !visited.Contains(neighborCoords))
+                {
+                    Node neighbor = _gridManager.grid[neighborCoords];
+
+                    if (!neighbor.isFree && ArePipesConnected(current, neighbor, dir))
+                    {
+                        visited.Add(neighborCoords);
+                        queue.Enqueue(neighbor);
+                    }
+                }
+            }
+        }
+
+        // Optionally store the path if needed
+        _gridManager.path = visited.Select(v => _gridManager.grid[v]).ToList();
     }
 
     private void CheckIfConnected(Node node)
@@ -108,6 +154,7 @@ public class PipePlacement : MonoBehaviour
                 {
                     if (ArePipesConnected(node, neighbor, dir))
                     {
+                        _gridManager.path.Add(neighbor);
                         node.gameObject.GetComponent<Renderer>().material.color = Color.blue;
                         neighbor.gameObject.GetComponent<Renderer>().material.color = Color.blue;
                         Debug.Log($"Connected: {node.cords} ↔ {neighbor.cords}");

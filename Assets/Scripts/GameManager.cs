@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEditor.Build.Content;
 using UnityEngine;
 using UnityEngine.Rendering;
@@ -14,7 +15,14 @@ public class GameManager : MonoBehaviour
 
     private PlayerMovement _playerMovement;
     private PipePlacement _pipePlacement;
-    private void Start()
+
+    public List<(int, int, int)> sizes = new List<(int, int, int)>();
+
+    public void SetGridSize(List<(int, int, int)> sizes)
+    {
+        //_gridManager.gridSize = gridSize;
+    }
+    public void StartGame()
     {
 
         BindObjects();

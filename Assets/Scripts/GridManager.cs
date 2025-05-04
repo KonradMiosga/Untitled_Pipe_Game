@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class GridManager : MonoBehaviour
 {
-    [SerializeField] public Vector3Int gridSize;
+    public Vector3Int gridSize;
     [SerializeField] int unityGridSize;
     [SerializeField] Material material;
     public Vector3Int inputPos;

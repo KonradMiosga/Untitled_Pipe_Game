@@ -44,6 +44,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd685430e2f35934582627c31a78c3be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gridSize: {x: 9, y: 9, z: 9}
+  gridSize: {x: 3, y: 3, z: 3}
   unityGridSize: 1
   material: {fileID: 2100000, guid: 2d2d065f47d056547b3f8ff02d412204, type: 2}
+  inputPos: {x: 0, y: 0, z: 0}
+  outputPos: {x: 0, y: 0, z: 0}
+  _gameSettings: {fileID: 0}

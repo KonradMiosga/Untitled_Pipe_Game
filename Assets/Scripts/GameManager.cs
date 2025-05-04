@@ -16,12 +16,6 @@ public class GameManager : MonoBehaviour
     private PlayerMovement _playerMovement;
     private PipePlacement _pipePlacement;
 
-    public List<(int, int, int)> sizes = new List<(int, int, int)>();
-
-    public void SetGridSize(List<(int, int, int)> sizes)
-    {
-        //_gridManager.gridSize = gridSize;
-    }
     public void StartGame()
     {
 

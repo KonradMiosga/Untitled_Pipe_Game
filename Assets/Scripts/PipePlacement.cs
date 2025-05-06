@@ -1,9 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public class PipePlacement : MonoBehaviour
 {
@@ -16,12 +14,15 @@ public class PipePlacement : MonoBehaviour
     [SerializeField] private Material ghostMat_green;
     [SerializeField] private Material ghostMat_red;
     private GridManager _gridManager;
+    private GameManager _gameManager;
 
 
     void Awake()
     {
         if (_gridManager == null)
             _gridManager = FindFirstObjectByType<GridManager>();
+        if (_gameManager == null)
+            _gameManager = FindFirstObjectByType<GameManager>();
     }
 
     void Start()
@@ -31,6 +32,9 @@ public class PipePlacement : MonoBehaviour
 
     void Update()
     {
+        if (_gameManager.isGameWon)
+            _gameManager.EndGame();
+
         if (_ghostObject != null)
         {
             _ghostObject.transform.position = transform.position;
@@ -64,14 +68,14 @@ public class PipePlacement : MonoBehaviour
         if (playerMovement.isMoving || !_gridManager.IsValidPlace(transform.position)) return;
 
         ObjectsDataPipes pipe = databasePipes.objectsData[selectedObjectIndex];
-        GameObject placed = Instantiate(pipe.Prefab);
+        GameObject placed = Instantiate(pipe.Prefab, _gameManager._objectContainer.transform);
         placed.GetComponent<Renderer>().material = material;
         placed.transform.position = transform.position;
 
         Vector3Int pos = _gridManager.WorldToGridCoords(placed.transform.position);
 
         _gridManager.AddPipetoGrid(pipe, placed.transform.position, placed);
-        Debug.Log($"Pipe placed at {_gridManager.WorldToGridCoords(placed.transform.position)} with connections {_gridManager.grid[_gridManager.WorldToGridCoords(placed.transform.position)].ToString()}");
+        //Debug.Log($"Pipe placed at {_gridManager.WorldToGridCoords(placed.transform.position)} with connections {_gridManager.grid[_gridManager.WorldToGridCoords(placed.transform.position)].ToString()}");
 
         CheckPathFromInput();
 
@@ -84,13 +88,14 @@ public class PipePlacement : MonoBehaviour
     {
         selectedObjectIndex = UnityEngine.Random.Range(0, databasePipes.objectsData.Count);
 
-        _ghostObject = Instantiate(databasePipes.objectsData[selectedObjectIndex].Prefab);
+        _ghostObject = Instantiate(databasePipes.objectsData[selectedObjectIndex].Prefab, _gameManager._objectContainer.transform);
         _ghostObject.GetComponent<Renderer>().material = ghostMat_green;
     }
 
     private void CheckPathFromInput()
     {
         Vector3Int start = _gridManager.inputPos;
+        Vector3Int end = _gridManager.outputPos;
 
         if (!_gridManager.grid.ContainsKey(start)) return;
 
@@ -119,6 +124,11 @@ public class PipePlacement : MonoBehaviour
 
                     if (!neighbor.isFree && ArePipesConnected(current, neighbor, dir))
                     {
+                        if (neighbor.cords == end)
+                        {
+                            Debug.Log("Game is won!");
+                            _gameManager.isGameWon = true;
+                        }
                         visited.Add(neighborCoords);
                         queue.Enqueue(neighbor);
                     }
@@ -134,12 +144,12 @@ public class PipePlacement : MonoBehaviour
     {
         Vector3Int[] directions = new Vector3Int[]
         {
-        Vector3Int.right,  // Right (X+)
-        Vector3Int.left, // Left (X-)
-        Vector3Int.up,  // Up (Y+)
-        Vector3Int.down, // Down (Y-)
-        Vector3Int.forward,  // Forward (Z+)
-        Vector3Int.back  // Backward (Z-)
+        Vector3Int.right,
+        Vector3Int.left,
+        Vector3Int.up,
+        Vector3Int.down,
+        Vector3Int.forward,
+        Vector3Int.back
         };
 
         foreach (Vector3Int dir in directions)
@@ -157,7 +167,7 @@ public class PipePlacement : MonoBehaviour
                         _gridManager.path.Add(neighbor);
                         node.gameObject.GetComponent<Renderer>().material.color = Color.blue;
                         neighbor.gameObject.GetComponent<Renderer>().material.color = Color.blue;
-                        Debug.Log($"Connected: {node.cords} ↔ {neighbor.cords}");
+                        //Debug.Log($"Connected: {node.cords} ↔ {neighbor.cords}");
                     }
                 }
             }
@@ -186,7 +196,4 @@ public class PipePlacement : MonoBehaviour
 
         return false;
     }
-
-
-
 }

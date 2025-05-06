@@ -1,16 +1,16 @@
-using System;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class MenuManager : MonoBehaviour
 {
 
-    [SerializeField] GameObject menu;
+    [SerializeField] public GameObject menu;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     [SerializeField] private GameSettings _gameSettings;
     [SerializeField] private Slider sizeXSlider;
     [SerializeField] private Slider sizeYSlider;
     [SerializeField] private Slider sizeZSlider;
+    [SerializeField] public GameObject winMenu;
 
     void Start()
     {

@@ -5,6 +5,7 @@ public class InOutPlacement : MonoBehaviour
     [SerializeField] private ObjectsDatabaseInOut databaseInOut;
     private int _side;
     private GridManager _gridManager;
+    private GameManager _gameManager;
     private ObjectsDataInOut _input;
     private ObjectsDataInOut _output;
     private int _xOut = 0;
@@ -18,6 +19,8 @@ public class InOutPlacement : MonoBehaviour
     {
         if (_gridManager == null)
             _gridManager = FindFirstObjectByType<GridManager>();
+        if (_gameManager == null)
+            _gameManager = FindFirstObjectByType<GameManager>();
     }
     public void PlaceInOutInWorld()
     {
@@ -81,16 +84,16 @@ public class InOutPlacement : MonoBehaviour
         _input = databaseInOut.objectsData[_side];
         Vector3Int posIn = new Vector3Int(_xIn, _yIn, _zIn);
         _gridManager.inputPos = posIn;
-        GameObject placedIn = Instantiate(_input.Prefab);
+        GameObject placedIn = Instantiate(_input.Prefab, _gameManager._objectContainer.transform);
         placedIn.transform.position = posIn;
-        _gridManager.AddInOuttoGrid(_input,posIn, placedIn);
+        _gridManager.AddInOuttoGrid(_input, posIn, placedIn);
         _gridManager.path.Add(_gridManager.grid[posIn]);
         Debug.Log($"Input placed at {posIn} with connections {_gridManager.grid[posIn]}");
 
         _output = databaseInOut.objectsData[_side + 6];
         Vector3Int posOut = new Vector3Int(_xOut, _yOut, _zOut);
         _gridManager.outputPos = posOut;
-        GameObject placedOut = Instantiate(_output.Prefab);
+        GameObject placedOut = Instantiate(_output.Prefab, _gameManager._objectContainer.transform);
         placedOut.transform.position = posOut;
         _gridManager.AddInOuttoGrid(_output, posOut, placedOut);
         Debug.Log($"Output placed at {posOut} with connections {_gridManager.grid[posOut]}");

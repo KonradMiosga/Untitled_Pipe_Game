@@ -2681,14 +2681,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58784fe2aff7e8c438805dd404c2e42b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _player: {fileID: 5585825889738486762, guid: ce0aecd75b2280549bcd1a6743076640, type: 3}
-  _gridManager: {fileID: 3973498010761496348, guid: eb6016684b66acb449c36f10bb076776, type: 3}
+  _playerPrefab: {fileID: 5585825889738486762, guid: ce0aecd75b2280549bcd1a6743076640, type: 3}
+  _gridManagerPrefab: {fileID: 3973498010761496348, guid: eb6016684b66acb449c36f10bb076776, type: 3}
   _mainDirectionalLight: {fileID: 1732133880730573922, guid: fda96d67e17f93942b6860211c4ef557, type: 3}
   _globalVolume: {fileID: 5102756509477532618, guid: b63a5038053f8384fbb2f2d1a6227dea, type: 3}
-  _manipulator: {fileID: 640399963320078264, guid: b2f3b31eda31dfd418c516a79993c1eb, type: 3}
-  _inOutPlacement: {fileID: -7023891468742230943, guid: 73b91b862df15e64c87d4b3ea989625b, type: 3}
+  _menuManager: {fileID: 181368771}
+  _inOutPlacementPrefab: {fileID: -7023891468742230943, guid: 73b91b862df15e64c87d4b3ea989625b, type: 3}
   isGameWon: 0
-  _objectContainer: {fileID: 181368770}
+  _objectContainer: {fileID: 0}
 --- !u!4 &1168710911
 Transform:
   m_ObjectHideFlags: 0

@@ -4,14 +4,18 @@ using UnityEngine.Rendering;
 public class GameManager : MonoBehaviour
 {
 
-    [SerializeField] private GameObject _player;
-    [SerializeField] private GridManager _gridManager;
+    [SerializeField] private GameObject _playerPrefab;
+    private GameObject _playerInstance;
+    [SerializeField] private GridManager _gridManagerPrefab;
+    private GridManager _gridManagerInstance;
     [SerializeField] private Light _mainDirectionalLight;
+    private Light _mainDirectionalLightInstance;
     [SerializeField] private Volume _globalVolume;
-    [SerializeField] private GameObject _manipulator;
+    private Volume _globalVolumeInstance;
     [SerializeField] private MenuManager _menuManager;
-    [SerializeField] private InOutPlacement _inOutPlacement;
-    [SerializeField] public bool isGameWon = false;
+    [SerializeField] private InOutPlacement _inOutPlacementPrefab;
+    private InOutPlacement _inOutPlacementInstance;
+    [SerializeField] public bool isGameWon;
 
     private PlayerMovement _playerMovement;
     private PipePlacement _pipePlacement;
@@ -22,34 +26,25 @@ public class GameManager : MonoBehaviour
     public void StartGame()
     {
 
+        isGameWon = false;
         BindObjects();
 
-        _gridManager.InitializeGrid();
-        _gridManager.DrawGridBounds();
-        _gridManager.PlaceInCenter(_player);
+        _gridManagerInstance.InitializeGrid();
+        _gridManagerInstance.DrawGridBounds();
+        _gridManagerInstance.PlaceInCenter(_playerInstance);
 
-        _playerMovement = _player.GetComponent<PlayerMovement>();
+        _playerMovement = _playerInstance.GetComponent<PlayerMovement>();
 
-        _pipePlacement = _player.GetComponent<PipePlacement>();
+        _pipePlacement = _playerInstance.GetComponent<PipePlacement>();
 
-        _inOutPlacement.PlaceInOutInWorld();
-
-
+        _inOutPlacementInstance.PlaceInOutInWorld();
     }
 
     public void EndGame()
     {
-        // GameObject.Find("MainMenu").SetActive(true);
-        // GameObject.Find("Winning").SetActive(true);
         _menuManager.menu.SetActive(true);
         _menuManager.winMenu.SetActive(true);
-        // winScreen.SetActive(true);
         DestroyBoundObjects();
-    }
-
-    void Update()
-    {
-        _manipulator.transform.position = _player.transform.position;
     }
 
     private void BindObjects()
@@ -63,11 +58,11 @@ public class GameManager : MonoBehaviour
 
         _objectContainer = new GameObject("SpawnedObjects");
 
-        _mainDirectionalLight = Instantiate(_mainDirectionalLight, _objectContainer.transform);
-        _globalVolume = Instantiate(_globalVolume, _objectContainer.transform);
-        _gridManager = Instantiate(_gridManager, _objectContainer.transform);
-        _player = Instantiate(_player, _objectContainer.transform);
-        _inOutPlacement = Instantiate(_inOutPlacement, _objectContainer.transform);
+        _mainDirectionalLightInstance = Instantiate(_mainDirectionalLight, _objectContainer.transform);
+        _globalVolumeInstance = Instantiate(_globalVolume, _objectContainer.transform);
+        _gridManagerInstance = Instantiate(_gridManagerPrefab, _objectContainer.transform);
+        _playerInstance = Instantiate(_playerPrefab, _objectContainer.transform);
+        _inOutPlacementInstance = Instantiate(_inOutPlacementPrefab, _objectContainer.transform);
     }
 
     private void DestroyBoundObjects()

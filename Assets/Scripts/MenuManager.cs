@@ -5,7 +5,6 @@ public class MenuManager : MonoBehaviour
 {
 
     [SerializeField] public GameObject menu;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     [SerializeField] private GameSettings _gameSettings;
     [SerializeField] private Slider sizeXSlider;
     [SerializeField] private Slider sizeYSlider;

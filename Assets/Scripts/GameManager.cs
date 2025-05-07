@@ -49,13 +49,6 @@ public class GameManager : MonoBehaviour
 
     private void BindObjects()
     {
-        // _mainDirectionalLight = Instantiate(_mainDirectionalLight);
-        // _globalVolume = Instantiate(_globalVolume);
-        // _gridManager = Instantiate(_gridManager);
-        // _player = Instantiate(_player);
-        // //_manipulator = Instantiate(_manipulator);
-        // _inOutPlacement = Instantiate(_inOutPlacement);
-
         _objectContainer = new GameObject("SpawnedObjects");
 
         _mainDirectionalLightInstance = Instantiate(_mainDirectionalLight, _objectContainer.transform);

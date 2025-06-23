@@ -79,7 +79,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 00ad3e0d4c745914bb0b44a3fc009276, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MouseSpeed: 3
+  MouseSpeed: 6
   orbitDamping: 10
 --- !u!114 &2384679238990728549
 MonoBehaviour:

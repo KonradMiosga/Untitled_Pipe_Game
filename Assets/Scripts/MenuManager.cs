@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class MenuManager : MonoBehaviour
 {
@@ -10,30 +11,64 @@ public class MenuManager : MonoBehaviour
     [SerializeField] private Slider sizeYSlider;
     [SerializeField] private Slider sizeZSlider;
     [SerializeField] public GameObject winMenu;
+    [SerializeField] public GameObject looseMenu;
+    [SerializeField] private TMP_Text xLabel;
+    [SerializeField] private TMP_Text yLabel;
+    [SerializeField] private TMP_Text zLabel;
 
     void Start()
     {
         sizeXSlider.onValueChanged.AddListener(OnSliderXValueChanged);
         sizeYSlider.onValueChanged.AddListener(OnSliderYValueChanged);
         sizeZSlider.onValueChanged.AddListener(OnSliderZValueChanged);
+        xLabel.text = _gameSettings.getX().ToString();
+        yLabel.text = _gameSettings.getY().ToString();
+        zLabel.text = _gameSettings.getZ().ToString();
     }
 
     void OnSliderXValueChanged(float value)
     {
-        int intSize = Mathf.RoundToInt(value);
-        _gameSettings.setX(intSize);
+        int rounded = Mathf.RoundToInt(value);
+
+        if (rounded % 2 == 0)
+        {
+            rounded += 1;
+        }
+
+        sizeXSlider.SetValueWithoutNotify(rounded);
+
+        _gameSettings.setX(rounded);
+        xLabel.text = _gameSettings.getX().ToString();
     }
 
     void OnSliderYValueChanged(float value)
     {
-        int intSize = Mathf.RoundToInt(value);
-        _gameSettings.setY(intSize);
+        int rounded = Mathf.RoundToInt(value);
+
+        if (rounded % 2 == 0)
+        {
+            rounded += 1;
+        }
+
+        sizeYSlider.SetValueWithoutNotify(rounded);
+
+        _gameSettings.setY(rounded);
+        yLabel.text = _gameSettings.getY().ToString();
     }
 
     void OnSliderZValueChanged(float value)
     {
-        int intSize = Mathf.RoundToInt(value);
-        _gameSettings.setZ(intSize);
+        int rounded = Mathf.RoundToInt(value);
+
+        if (rounded % 2 == 0)
+        {
+            rounded += 1;
+        }
+
+        sizeZSlider.SetValueWithoutNotify(rounded);
+
+        _gameSettings.setZ(rounded);
+        zLabel.text = _gameSettings.getZ().ToString();
     }
 
 }

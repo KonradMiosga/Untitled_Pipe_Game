@@ -86,6 +86,7 @@ public class InOutPlacement : MonoBehaviour
         _gridManager.inputPos = posIn;
         GameObject placedIn = Instantiate(_input.Prefab, _gameManager._objectContainer.transform);
         placedIn.transform.position = posIn;
+        placedIn.gameObject.GetComponent<Renderer>().material.color = Color.lightSlateGray;
         _gridManager.AddInOuttoGrid(_input, posIn, placedIn);
         _gridManager.path.Add(_gridManager.grid[posIn]);
         Debug.Log($"Input placed at {posIn} with connections {_gridManager.grid[posIn]}");
@@ -95,6 +96,7 @@ public class InOutPlacement : MonoBehaviour
         _gridManager.outputPos = posOut;
         GameObject placedOut = Instantiate(_output.Prefab, _gameManager._objectContainer.transform);
         placedOut.transform.position = posOut;
+        placedOut.gameObject.GetComponent<Renderer>().material.color = Color.lightSlateGray;
         _gridManager.AddInOuttoGrid(_output, posOut, placedOut);
         Debug.Log($"Output placed at {posOut} with connections {_gridManager.grid[posOut]}");
 

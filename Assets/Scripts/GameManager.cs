@@ -25,7 +25,6 @@ public class GameManager : MonoBehaviour
 
     public void StartGame()
     {
-
         isGameWon = false;
         BindObjects();
 
@@ -44,6 +43,14 @@ public class GameManager : MonoBehaviour
     {
         _menuManager.menu.SetActive(true);
         _menuManager.winMenu.SetActive(true);
+        DestroyBoundObjects();
+    }
+
+    public void LoseGame()
+    {
+        // Debug.Log("Spiel verloren!");
+        _menuManager.menu.SetActive(true);
+        _menuManager.looseMenu.SetActive(true);
         DestroyBoundObjects();
     }
 

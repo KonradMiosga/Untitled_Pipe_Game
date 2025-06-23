@@ -16,6 +16,12 @@ public class PipePlacement : MonoBehaviour
     private GridManager _gridManager;
     private GameManager _gameManager;
 
+    // Farbverlauf
+    private int pipeColorIndex = 0;
+    private Color lightBlue = new Color(0.7f, 0.85f, 1f);
+    private Color midBlue = new Color(0.3f, 0.6f, 1f);
+    private Color darkBlue = new Color(0f, 0.2f, 0.6f);
+    private Color[] blueStages;
 
     void Awake()
     {
@@ -27,6 +33,7 @@ public class PipePlacement : MonoBehaviour
 
     void Start()
     {
+        blueStages = new Color[] { lightBlue, midBlue, darkBlue };
         StartPlacement();
     }
 
@@ -73,15 +80,14 @@ public class PipePlacement : MonoBehaviour
         placed.transform.position = transform.position;
 
         Vector3Int pos = _gridManager.WorldToGridCoords(placed.transform.position);
-
         _gridManager.AddPipetoGrid(pipe, placed.transform.position, placed);
-        //Debug.Log($"Pipe placed at {_gridManager.WorldToGridCoords(placed.transform.position)} with connections {_gridManager.grid[_gridManager.WorldToGridCoords(placed.transform.position)].ToString()}");
 
         CheckPathFromInput();
 
-
         Destroy(_ghostObject);
         PrepareNextGhost();
+
+        UpdatePipeColors(); // Neuer Aufruf nach jeder Platzierung
     }
 
     private void PrepareNextGhost()
@@ -108,12 +114,12 @@ public class PipePlacement : MonoBehaviour
         while (queue.Count > 0)
         {
             Node current = queue.Dequeue();
-            current.gameObject.GetComponent<Renderer>().material.color = Color.blue;
+            // current.gameObject.GetComponent<Renderer>().material.color = Color.lightSlateGray;
 
             foreach (Vector3Int dir in new Vector3Int[] {
-            Vector3Int.right, Vector3Int.left,
-            Vector3Int.up, Vector3Int.down,
-            Vector3Int.forward, Vector3Int.back })
+                Vector3Int.right, Vector3Int.left,
+                Vector3Int.up, Vector3Int.down,
+                Vector3Int.forward, Vector3Int.back })
             {
                 Vector3Int neighborCoords = current.cords + dir;
 
@@ -136,64 +142,45 @@ public class PipePlacement : MonoBehaviour
             }
         }
 
-        // Optionally store the path if needed
         _gridManager.path = visited.Select(v => _gridManager.grid[v]).ToList();
     }
 
-    private void CheckIfConnected(Node node)
+    private void UpdatePipeColors()
     {
-        Vector3Int[] directions = new Vector3Int[]
-        {
-        Vector3Int.right,
-        Vector3Int.left,
-        Vector3Int.up,
-        Vector3Int.down,
-        Vector3Int.forward,
-        Vector3Int.back
-        };
+        if (_gridManager.path == null || _gridManager.path.Count == 0) return;
 
-        foreach (Vector3Int dir in directions)
-        {
-            Vector3Int neighborCoords = node.cords + dir;
+        int pipeIndex = pipeColorIndex / 3;
+        int colorStage = pipeColorIndex % 3;
 
-            if (_gridManager.grid.ContainsKey(neighborCoords))
+        // Wenn der nächste Pipe-Index außerhalb des Pfads liegt → Spiel verloren
+        if (pipeIndex >= _gridManager.path.Count)
+        {
+            _gameManager.LoseGame();
+            return;
+        }
+
+        Node currentPipe = _gridManager.path[pipeIndex];
+        Renderer renderer = currentPipe.gameObject.GetComponent<Renderer>();
+        if (renderer != null)
+        {
+            // Nur aktualisieren, wenn noch nicht darkblue
+            if (renderer.material.color != darkBlue)
             {
-                Node neighbor = _gridManager.grid[neighborCoords];
-
-                if (!neighbor.isFree) // Only check if there's a pipe
-                {
-                    if (ArePipesConnected(node, neighbor, dir))
-                    {
-                        _gridManager.path.Add(neighbor);
-                        node.gameObject.GetComponent<Renderer>().material.color = Color.blue;
-                        neighbor.gameObject.GetComponent<Renderer>().material.color = Color.blue;
-                        //Debug.Log($"Connected: {node.cords} ↔ {neighbor.cords}");
-                    }
-                }
+                renderer.material.color = blueStages[colorStage];
             }
         }
+
+        pipeColorIndex++;
     }
 
     private bool ArePipesConnected(Node pipe1, Node pipe2, Vector3Int direction)
     {
-        if (direction == Vector3Int.right) // X+
-            return pipe1.connections.Xpos == 1 && pipe2.connections.Xneg == 1;
-
-        if (direction == Vector3Int.left) // X-
-            return pipe1.connections.Xneg == 1 && pipe2.connections.Xpos == 1;
-
-        if (direction == Vector3Int.up) // Y+
-            return pipe1.connections.Ypos == 1 && pipe2.connections.Yneg == 1;
-
-        if (direction == Vector3Int.down) // Y-
-            return pipe1.connections.Yneg == 1 && pipe2.connections.Ypos == 1;
-
-        if (direction == Vector3Int.forward) // Z+
-            return pipe1.connections.Zpos == 1 && pipe2.connections.Zneg == 1;
-
-        if (direction == Vector3Int.back) // Z-
-            return pipe1.connections.Zneg == 1 && pipe2.connections.Zpos == 1;
-
+        if (direction == Vector3Int.right) return pipe1.connections.Xpos == 1 && pipe2.connections.Xneg == 1;
+        if (direction == Vector3Int.left) return pipe1.connections.Xneg == 1 && pipe2.connections.Xpos == 1;
+        if (direction == Vector3Int.up) return pipe1.connections.Ypos == 1 && pipe2.connections.Yneg == 1;
+        if (direction == Vector3Int.down) return pipe1.connections.Yneg == 1 && pipe2.connections.Ypos == 1;
+        if (direction == Vector3Int.forward) return pipe1.connections.Zpos == 1 && pipe2.connections.Zneg == 1;
+        if (direction == Vector3Int.back) return pipe1.connections.Zneg == 1 && pipe2.connections.Zpos == 1;
         return false;
     }
 }

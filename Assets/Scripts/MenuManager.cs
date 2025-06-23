@@ -71,4 +71,9 @@ public class MenuManager : MonoBehaviour
         zLabel.text = _gameSettings.getZ().ToString();
     }
 
+    public void doExitGame()
+    {
+        Application.Quit();
+    }
+
 }

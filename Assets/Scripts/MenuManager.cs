@@ -12,6 +12,7 @@ public class MenuManager : MonoBehaviour
     [SerializeField] private Slider sizeZSlider;
     [SerializeField] public GameObject winMenu;
     [SerializeField] public GameObject looseMenu;
+    [SerializeField] public GameObject mainMenu;
     [SerializeField] private TMP_Text xLabel;
     [SerializeField] private TMP_Text yLabel;
     [SerializeField] private TMP_Text zLabel;

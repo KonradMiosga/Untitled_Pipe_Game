@@ -16,11 +16,41 @@ public class GameManager : MonoBehaviour
     [SerializeField] private InOutPlacement _inOutPlacementPrefab;
     private InOutPlacement _inOutPlacementInstance;
     [SerializeField] public bool isGameWon;
+    [SerializeField] private GameObject pauseMenu;
+    public bool isPaused = false;
+
 
     private PlayerMovement _playerMovement;
     private PipePlacement _pipePlacement;
 
     public GameObject _objectContainer;
+
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (isPaused)
+                ResumeGame();
+            else
+                PauseGame();
+        }
+    }
+
+    public void PauseGame()
+    {
+        _menuManager.menu.SetActive(true);
+        pauseMenu.SetActive(true);
+        Time.timeScale = 0f; // stoppt Spielzeit
+        isPaused = true;
+    }
+
+    public void ResumeGame()
+    {
+        pauseMenu.SetActive(false);
+        _menuManager.menu.SetActive(false);
+        Time.timeScale = 1f; // Spiel läuft weiter
+        isPaused = false;
+    }
 
 
     public void StartGame()
@@ -47,11 +77,20 @@ public class GameManager : MonoBehaviour
     }
 
     public void LoseGame()
+
     {
-        // Debug.Log("Spiel verloren!");
         _menuManager.menu.SetActive(true);
         _menuManager.looseMenu.SetActive(true);
         DestroyBoundObjects();
+    }
+
+    public void BackToMenu()
+    {
+        _menuManager.menu.SetActive(true);
+        pauseMenu.SetActive(false);
+        _menuManager.mainMenu.SetActive(true);
+        DestroyBoundObjects();
+        Time.timeScale = 1f; // Spiel läuft weiter
     }
 
     private void BindObjects()

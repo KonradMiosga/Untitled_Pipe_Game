@@ -36,7 +36,6 @@ public class GridManager : MonoBehaviour
                 }
             }
         }
-        //PrintGrid();
     }
 
     public void DrawGridBounds()

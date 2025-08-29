@@ -114,7 +114,6 @@ public class PipePlacement : MonoBehaviour
         while (queue.Count > 0)
         {
             Node current = queue.Dequeue();
-            // current.gameObject.GetComponent<Renderer>().material.color = Color.lightSlateGray;
 
             foreach (Vector3Int dir in new Vector3Int[] {
                 Vector3Int.right, Vector3Int.left,
